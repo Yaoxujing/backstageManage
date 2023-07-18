@@ -4,13 +4,16 @@ import { Card,Button,Table } from 'antd'
 import { PAGE_SIZE } from '../../utils/constants';
 import { reqRoles ,reqAddRoles ,reqUpdateRoles} from '../../api';
 import { Modal } from 'antd';
-import storageUtils from '../../utils/storageUtils';
+// import storageUtils from '../../utils/storageUtils';
 import AddForm from './add-form';
 import AuthForm from './auth-form';
 import { message } from "antd"; // 优化的界面提示
 import { formateDate } from '../../utils/dateUtils';
 
-export default function Role() {
+// 引入connect用于连接UI组件与redux
+import { connect } from 'react-redux'
+
+function Role(props) {
   // 获取modal1/2开闭的
   const [modal1Open, setModal1Open] = useState(false)
   const [modal2Open, setModal2Open] = useState(false)
@@ -148,7 +151,9 @@ export default function Role() {
     //设置角色
     const { _id ,menus} = role //权限key数组
     const auth_time = Date.now() //授权时间
-    const auth_name = storageUtils.getUser().username //授权用户->当前登录用户
+
+    // const auth_name = storageUtils.getUser().username //授权用户->当前登录用户
+    const auth_name = props.user.username
     const newRole = { _id, menus, auth_name, auth_time }
     // console.log(newRole)
 
@@ -221,3 +226,17 @@ export default function Role() {
     </Card>
   )
 }
+
+export default connect(
+  // mapStateToProps
+  state => {
+    return {
+      user: state.user,  //属于setHeadTitle组件的state
+    }
+    },
+    // mapDispatchToProps的简写 高速行驶 自动分发
+    // 对象的简写形式
+    {
+      
+	}
+)(Role)

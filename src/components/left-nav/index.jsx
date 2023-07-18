@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate,useLocation  } from 'react-router-dom'
 import storageUtils from '../../utils/storageUtils';
 
 // antd 
@@ -14,26 +14,60 @@ import logo from '../../assets/images/logo.png'
 // 路由list
 import Items from '../../config/menuConfig';
 
+//redux
+import {useDispatch, useSelector } from 'react-redux';
+import { setHeadTitle } from '../../redux/actions/headTitle';
+
+
+// 映射一个keyToLabel
+const keyToLabel = new Map()
+Items.map((index) => {
+  if (index.children) {
+    index.children.map(child => {
+      keyToLabel.set(child.key, child.label)
+      return child
+      } 
+    )
+  } else {
+    keyToLabel.set(index.key, index.label)
+  }
+  return index
+})
+
 // 左侧导航的文件
-export default function LeftNav(props) {
+export default function LeftNav() {
+  const dispatch = useDispatch()
+  const location = useLocation();
   // 设置折叠的状态 警告之后写在了外面
   // const [collapsed,setCollapsed] = useState(false);
   // const [collapsed] = useState(false);
   // const toggleCollapsed = () => {
   //   setCollapsed(!collapsed);
   // };
-
   // 根据权限指定管理界面
   const [myItems, setMyItems] = useState([])
-  // const [user , setUser] = useState()
+  const user = useSelector((redux)=>redux.user)
+
+  // 刷新的时候保持选中状态
+  const [selectedKey, setSelectedKey] = useState("");
+
   useEffect(() => {
-    updateMenu()
+    updateMenu();
+    // 从本地存储中获取选中的菜单项的键值
+    const storedKey = storageUtils.getKey();
+  
+    if (storedKey && storedKey === location.pathname) {
+      setSelectedKey(storedKey);
+    } else {
+      setSelectedKey(location.pathname)
+    }
+    dispatch(setHeadTitle(keyToLabel.get(storedKey)))
+    
   }, [])
 
   
   // 根据用户权限更新 Menu
   const updateMenu = () => {
-    const user = storageUtils.getUser()
     let { menus } = user.role
     // 深度拷贝
     let initItems = deepClone(Items)
@@ -87,7 +121,13 @@ export default function LeftNav(props) {
 
   // 跳转函数
   const routerTo = (e) => {
-    navigate(e.key,{replace:true},)
+    // console.log(e.item.props.label)
+    setSelectedKey(e.key);
+    // console.log(e.key)
+    dispatch(setHeadTitle(keyToLabel.get(e.key)))
+    // 将选中的菜单项的键值保存到本地存储
+    storageUtils.saveKey(e.key);
+    navigate(e.key,{replace:true})
   }
 
   return (
@@ -96,7 +136,7 @@ export default function LeftNav(props) {
       <Link to='/admin' >
         <header className='left-nav-header'>
           <img src={logo} alt='logo'></img>
-          <h1>杭电后台</h1>
+          <h1>商城后台</h1>
         </header>
       </Link>
       {/* memu 导航菜单 */}
@@ -118,6 +158,7 @@ export default function LeftNav(props) {
           items = {myItems}
           // 点击跳转链接
           onClick={routerTo}
+          selectedKeys={[selectedKey]}
           />
       </div>
     </div>

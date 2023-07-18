@@ -2,8 +2,8 @@
 
 import ajax from "./ajax";
 
-// const BASE = "/api1";
-const BASE = "http://localhost:3000";
+const BASE = "/api";
+// const BASE = "http://localhost:3000";
 
 // 请求登陆接口
 export const reqLogin = (username, password) =>

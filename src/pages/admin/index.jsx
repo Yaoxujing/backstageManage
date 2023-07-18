@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Layout} from 'antd'
 
 // import memoryUtils from '../../utils/memoryUtils'
-import storageUtils from '../../utils/storageUtils'
+// import storageUtils from '../../utils/storageUtils'
 
 // 引入路由
 import { Navigate,Outlet } from "react-router-dom";
@@ -13,20 +13,27 @@ import { Navigate,Outlet } from "react-router-dom";
 import HeaderMy from '../../components/header-my'
 import LeftNav from '../../components/left-nav'
 
+
+// 引入connect用于连接UI组件与redux
+import { connect } from 'react-redux'
+// 引入操作对象
+import { loginAction } from '../../redux/actions/user';
+
 // 解构赋值
 const { Header, Footer, Sider, Content } = Layout
 
 
 
-export default function Admin() {
+
+function Admin(props) {
   // 接收到的状态
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
   // 如果本地存储中没有储存user ==>当前没有登陆需要回退
-  const user = storageUtils.getUser()
-
+  // const user = storageUtils.getUser()
+  const user = props.useRedux
   if (!user || !user._id) {
     return <Navigate to='/login' />
   }
@@ -74,9 +81,23 @@ export default function Admin() {
             <Outlet />
           </Content>
           {/* 尾部组件 */}
-          <Footer style={footerStyle}>做出这个界面不易啊,看到的快夸夸我吧,欢迎提出指导意见,大家一起来找bug</Footer>
+          <Footer style={footerStyle}>出品单位：杭州电子科技大学  &ensp; 出品人：yxj &ensp; 学院：计算机学院 &ensp;  时间：2023年 &ensp; email:387951031@qq.com</Footer>
         </Layout>
       </Layout>
   )
 }
+
+export default connect(
+  // mapStateToProps
+  state => {
+    return {
+      useRedux: state.user,  //属于setHeadTitle组件的state
+    }
+    },
+    // mapDispatchToProps的简写 高速行驶 自动分发
+    // 对象的简写形式
+    {
+      loginAction
+	}
+)(Admin)
 

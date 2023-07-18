@@ -1,5 +1,5 @@
 // 这里配置路由的所有规则
-
+import {lazy,Suspense } from 'react'
 import { Navigate } from 'react-router-dom'
 // 引入所有组件
 import Login from '../pages/login'
@@ -7,15 +7,26 @@ import Admin from '../pages/admin'
 import Home  from '../pages/home'
 // 引入所有的子路由
 import Product from '../pages/product'
-import Role from '../pages/role'
-import User from '../pages/user'
-import Bar from '../pages/charts/bar'
-import Line from '../pages/charts/line'
-import Pie from '../pages/charts/pie'
+// import Role from '../pages/role'
+// import User from '../pages/user'
+// import Bar from '../pages/charts/bar'
+// import Line from '../pages/charts/line'
+// import Pie from '../pages/charts/pie'
 import Category from '../pages/category'
-import AddUpdateProduct from '../pages/product/add-product'
-import DetailProduct from '../pages/product/detail-product'
-import ProductHome from '../pages/product/home'
+// import AddUpdateProduct from '../pages/product/add-product'
+// import DetailProduct from '../pages/product/detail-product'
+// import ProductHome from '../pages/product/home'
+
+// const Product = lazy(() => import('../pages/product'));
+const Role = lazy(()=>import('../pages/role'))
+const User = lazy(()=>import('../pages/user'))
+const Bar = lazy(()=>import('../pages/charts/bar'))
+const Line = lazy(()=>import('../pages/charts/line'))
+const Pie = lazy(()=>import('../pages/charts/pie'))
+// const Category = lazy(()=>import('../pages/category'))
+const AddUpdateProduct = lazy(()=>import('../pages/product/add-product'))
+const DetailProduct = lazy(()=>import('../pages/product/detail-product'))
+const ProductHome = lazy(() => import('../pages/product/home'))
 
 const my_route = 
     [
@@ -28,12 +39,16 @@ const my_route =
             element: <Admin />,
             children: [
                 {
+                    path: '',
+                    element: <Navigate to="home" />
+                  },
+                {
                     path: 'home',
                     element: <Home />,
                 },
                 {
                     path: 'category',
-                    element: <Category />
+                    element: <Category />,
                 },
                 {
                     path: 'product',
@@ -45,15 +60,15 @@ const my_route =
                         },
                         {
                             path: 'product-home',
-                            element: <ProductHome />
+                            element: <Suspense><ProductHome /></Suspense>,
                         },
                         {
                             path: 'add-update',
-                            element: <AddUpdateProduct />
+                            element: <Suspense><AddUpdateProduct /></Suspense>,
                         },
                         {
                             path: 'detail-product',
-                            element: <DetailProduct/>
+                            element: <Suspense><DetailProduct/></Suspense>,
 
                         }
                         
@@ -61,30 +76,33 @@ const my_route =
                 },
                 {
                     path: 'role',
-                    element: <Role />
+                    element: <Suspense><Role /></Suspense>,
                 },
                 {
                     path: 'user',
-                    element: <User />
+                    element: <Suspense><User /></Suspense>
                 },
                 {
                     path: 'pie',
-                    element: <Pie />
+                    element: <Suspense><Pie /></Suspense>,
                 },
                 {
                     path: 'line',
-                    element: <Line />
+                    element: <Suspense><Line /></Suspense>,
                 },
                 {
                     path: 'bar',
-                    element: <Bar />
+                    element: <Suspense><Bar /></Suspense>,
                 },
-                
+                // {
+                //     path:'/',
+                //     element:<Home />
+                // }
             ]
         },
         {
             path: '/',
-            element: < Navigate to="/admin" />
+            element: < Navigate to="/admin/home" />
         }
             
     ]

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-
 // antd的组件和图标
 import { Card, Button,Modal,Space, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -164,7 +163,7 @@ export default function Category() {
 
 
   return (
-    <div className='category'>
+    // <div className='category'>
       <Card
       title= {parentName}
         extra={
@@ -188,9 +187,10 @@ export default function Category() {
               </Modal>
           </div>
         }
-      style={{
-        width:900
-      }}
+        style={{
+          margin: 20,
+          textAlign: 'left'
+        }}
     >
         <Table
           rowKey='_id'
@@ -226,6 +226,6 @@ export default function Category() {
     />
   </Table>
     </Card>
-    </div>
+    // </div>
   )
 }

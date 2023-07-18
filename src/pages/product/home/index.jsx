@@ -161,12 +161,13 @@ export default function ProductHome() {
       </Button>
   )
   return (
-    <div className='product-home'>
+    // <div className='product-home'>
       <Card
       title={title}
       extra={extra}
       style={{
-        width: 850,
+        margin: 20,
+        textAlign: 'left'
       }}
       className='product-card'
     >
@@ -179,7 +180,7 @@ export default function ProductHome() {
           loading={loading}
         />
       </Card>
-    </div>
+    // </div>
     
   )
 }
