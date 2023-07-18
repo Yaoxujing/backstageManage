@@ -8,11 +8,9 @@ import {
   Form,
   Input,
   Cascader,
-  Upload,
   Button
 } from 'antd'
 import { message } from 'antd';
-import ImgCrop from 'antd-img-crop';
 
 import './index.less'
 import ButtonLink from '../../../components/button-link';

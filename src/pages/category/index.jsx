@@ -7,7 +7,7 @@ import { message } from "antd"; // 优化的界面提示
 // 引入自己的组件
 import './index.less' //样式
 import ButtonLink from '../../components/button-link';
-import { reqCategory, reqAddCategory,reqUpdateCategory } from '../../api'; //ajax 请求
+import { reqCategory, reqAddCategory, reqUpdateCategory } from '../../api'; //ajax 请求
 import AddForm from '../../components/add-form';   //添加一个列表的组件
 import UpdateForm from '../../components/update-form';   //修改一个列表的组件
 

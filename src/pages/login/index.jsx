@@ -1,6 +1,6 @@
-import React, {useState, useEffect } from 'react'
+import React, {useState} from 'react'
 // 路由管理
-import { useNavigate ,Navigate} from 'react-router-dom'
+import { Navigate} from 'react-router-dom'
 
 // 引入antd
 import { Tabs} from 'antd';
@@ -31,9 +31,9 @@ export default function Login() {
   let [loginType, setLoginType] = useState("account")
 
   // 判断用户是否登陆
-  const myuser = useSelector((state) => state['user'])
-  // console.log(myuser)
-  if (myuser && myuser._id) {
+  const myUser = useSelector((state) => state['user'])
+  // console.log(myUser)
+  if (myUser && myUser._id) {
     return <Navigate to='/admin/home' />
   }
 
